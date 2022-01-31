@@ -1,0 +1,76 @@
+version: "3.9"
+services:
+  broker:
+    image: redis:5-alpine
+    hostname: redis
+    env_file:
+      &envfile
+      - env.env
+    ports:
+      - 6379:6379
+    command:
+      [ "redis-server", "--save 60 1" ]
+      # "--requirepass",
+      # "redis"
+    volumes:
+      - ./db:/data
+  downloader:
+    build:
+      context: .
+      target: etl
+      dockerfile: Dockerfile
+    image: dlpipe:v1.0
+    restart: "no"
+    hostname: downloader
+    env_file: *envfile
+    command:
+      [
+        "celery",
+        "-A",
+        "tasks.celery_app.app",
+        "worker",
+        "--queues=sentinel",
+        "--loglevel=INFO",
+        "--autoscale=1,3",
+        "-E",
+        "-O",
+        "fair",
+        "--prefetch-multiplier=1"
+      ]
+    volumes:
+      - ./app:/app
+      - ./data:/data
+    depends_on:
+      - broker
+  tester:
+    image: dlpipe:v1.0
+    restart: "no"
+    hostname: tester
+    env_file: *envfile
+    command: [ "python3", "run_task.py" ]
+    depends_on:
+      - broker
+      - downloader
+  monitor:
+    image: dlpipe:v1.0
+    hostname: monitor
+    restart: "no"
+    env_file: *envfile
+    ports:
+      - 15555:5555
+    working_dir: /app
+    command:
+      [
+        "celery",
+        "--app=tasks.celery_app.app",
+        "flower",
+        "--persistent=False",
+        "--persistent=True",
+        "--db=/db/flower.db"
+      ]
+    volumes:
+      - ./app:/app
+      - ./db:/db
+    depends_on:
+      - broker
+      # - scheduler
