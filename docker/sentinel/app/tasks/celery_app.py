@@ -17,21 +17,25 @@ app.conf.update(
             "tasks.task_router"
         ),
         "task_routes": ("tasks.task_router.TaskRouter",)
-        # "imports": (
-        #     "tasks", "task_router",
-        # ),
-        #    "worker_max_tasks_per_child":1,
-        # "task_routes": ("task_router.TaskRouter",),
-        # "task_serializer": "json",
-        # "result_serializer": "json",
-        # "accept_content": ["json"]
     }
 )
 
-# app.conf.beat_schedule = {
+# app.conf.update({
+#     "broker_url": CELERY_BROKER_URL,
+#     "result_backend" : CELERY_BACKEND_URL,
+#     "imports": (
+#         "tasks","task_router",
+#     ),
+# #    "worker_max_tasks_per_child":1,
+#     "task_routes": ("task_router.TaskRouter",),
+#     "task_serializer": "json",
+#     "result_serializer": "json",
+#     "accept_content": ["json"]})
+
+# app.conf.beat_schedule={
 #     'search-meta': {
-#         'task': 'scheduler:viirs',
-#         'schedule': crontab(hour=0, minute=1,),
-#         'args': (["auto"]),
+#     'task': 'scheduler:viirs',  
+#     'schedule': crontab(hour=0, minute=1,),
+#     'args': (["auto"]),
 #     }
 # }
