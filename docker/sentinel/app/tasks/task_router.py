@@ -6,4 +6,5 @@ class TaskRouter(object):
         if ":" not in task:
             return {"queue": "default"}
         namespace, _ = task.split(":")
+        print(f'Send task to {namespace} queue')
         return {"queue": namespace}

@@ -11,5 +11,5 @@ RUN apt-get update -y && \
     pip install https://github.com/mher/flower/zipball/master#egg=flower && \
     apt-get autoremove -y
 
-COPY ./app /app
+# COPY ./app /app
 WORKDIR /app
