@@ -31,7 +31,7 @@ services:
         "worker",
         "--queues=downloader",
         "--loglevel=INFO",
-        "--autoscale=1,3",
+        "--autoscale=1,5",
         "-E",
         "-O",
         "fair",

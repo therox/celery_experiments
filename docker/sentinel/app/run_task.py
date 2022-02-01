@@ -10,8 +10,8 @@ except:
 
 if __name__ == '__main__':
     sleep(3)
-    for i in range(1):
+    for i in range(10):
         app.send_task(name='downloader:sentinel',
-                      args=['Test send_task'])
-        downloader.apply_async(args=['Test .aply_async'])
-        downloader.delay('Test .delay')
+                      args=[f'Test send_task {i+1}'])
+        downloader.apply_async(args=[f'Test .aply_async {i+1}'])
+        downloader.delay(f'Test .delay {i+1}')
