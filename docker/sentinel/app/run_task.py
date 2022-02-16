@@ -23,8 +23,11 @@ if __name__ == '__main__':
     query = "SELECT guid, title FROM datasets;"
     res = db_connection.fetch_all(query, True)
     print(f'Got {len(res)} datasets to')
-    for dataset in res:
+    for i in range(0, 2):
         app.send_task(name='downloader:sentinel',
-                      args=[dataset['guid'], dataset['title']])
-        # downloader.apply_async(args=[f'Test .aply_async {i+1}'])
-        # downloader.delay(f'Test .delay {i+1}')
+                      args=[res[i]['guid'], res[i]['title']])
+
+    # app.send_task(name='downloader:sentinel',
+    #               args=[res['guid'], res['title']])
+    # downloader.apply_async(args=[f'Test .aply_async {i+1}'])
+    # downloader.delay(f'Test .delay {i+1}')

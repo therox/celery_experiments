@@ -1,6 +1,7 @@
 from time import sleep
 from celery import shared_task
 from db_service import DBConnection
+from sentinel.downloader import download_dataset
 
 try:
     from tasks.celery_app import app, config
@@ -24,6 +25,8 @@ def downloader(self, dataset_guid: str, dataset_title: str):
     # Скачиваем датасет
     logger.info(
         f'now I\'m downloading dataset {dataset_title} with GUID {dataset_guid} and i am {self.request.id} - {self.name}')
+    download_dataset(self,
+                     dataset_guid, dataset_title, config.COPERNICUS_CREDENTIALS, "/data", logger)
     # logger.info('Connect to db?')
     # try:
     #     res = db_connection.fetch_one(
