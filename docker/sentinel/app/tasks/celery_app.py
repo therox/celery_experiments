@@ -3,8 +3,9 @@
 
 # from __future__ import absolute_import, print_function, unicode_literals
 
-import config
 from celery import Celery
+import config
+
 # from celery.schedules import crontab
 
 app = Celery(__name__)
@@ -34,7 +35,7 @@ app.conf.update(
 
 # app.conf.beat_schedule={
 #     'search-meta': {
-#     'task': 'scheduler:viirs',  
+#     'task': 'scheduler:viirs',
 #     'schedule': crontab(hour=0, minute=1,),
 #     'args': (["auto"]),
 #     }
